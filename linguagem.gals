@@ -40,6 +40,9 @@ fimComando: ";"
 <programa>
 <comando>
 <expressao>
+<termo>
+<potencia>
+<fator>
 
 #Grammar
 <programa> ::= <comando> <programa> | <comando>;
