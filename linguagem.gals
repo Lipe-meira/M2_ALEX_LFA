@@ -1,0 +1,64 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+
+// Nome das classes
+ScannerName = Lexico
+ParserName = Sintatico
+SemanticName = Semantico
+
+Package = gals
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = Stream
+Parser = SLR
+
+#RegularDefinitions
+
+#Tokens
+imprimir: "Show"
+log: "log"
+
+variavel: [a-zA-Z]+
+numeroBinario: [0-1]+
+
+exponenciacao: \*\*
+soma: \+
+subtracao: \-
+multiplicacao: \*
+divisao: /
+
+igual: "="
+abrePar: "("
+fechaPar: ")"
+fimComando: ";"
+
+ : [\ \n\t\r]+
+
+#NonTerminals
+<programa>
+<comando>
+<expressao>
+
+#Grammar
+<programa> ::= <comando> <programa> | <comando>;
+
+<comando> ::= variavel igual <expressao> fimComando
+            | imprimir abrePar variavel fechaPar fimComando;
+
+<expressao> ::= <expressao> soma <termo>
+              | <expressao> subtracao <termo>
+              | <termo>;
+
+<termo> ::= <termo> multiplicacao <potencia>
+          | <termo> divisao <potencia>
+          | <potencia>;
+
+<potencia> ::= <fator> exponenciacao <potencia>
+             | <fator>;
+
+<fator> ::= numeroBinario
+          | variavel
+          | abrePar <expressao> fechaPar
+          | log abrePar <expressao> fechaPar;
