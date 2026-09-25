@@ -45,23 +45,34 @@ fimComando: ";"
 <fator>
 
 #Grammar
+
+// #1: guardar o nome da variável que receberá o resultado;
+// #2: concluir a atribuição;
+// #3: exibir o valor;
+// #4 e #5: somar e subtrair;
+// #6 e #7: multiplicar e dividir;
+// #8: exponenciar;
+// #9: converter um literal binário;
+// #10: consultar uma variável;
+// #11: calcular o logaritmo.
+
 <programa> ::= <comando> <programa> | <comando>;
 
-<comando> ::= variavel igual <expressao> fimComando
-            | imprimir abrePar variavel fechaPar fimComando;
+<comando> ::= variavel #1 igual <expressao> fimComando #2
+            | imprimir abrePar variavel #10 fechaPar fimComando #3;
 
-<expressao> ::= <expressao> soma <termo>
-              | <expressao> subtracao <termo>
+<expressao> ::= <expressao> soma <termo> #4
+              | <expressao> subtracao <termo> #5
               | <termo>;
 
-<termo> ::= <termo> multiplicacao <potencia>
-          | <termo> divisao <potencia>
+<termo> ::= <termo> multiplicacao <potencia> #6
+          | <termo> divisao <potencia> #7
           | <potencia>;
 
-<potencia> ::= <fator> exponenciacao <potencia>
+<potencia> ::= <fator> exponenciacao <potencia> #8
              | <fator>;
 
-<fator> ::= numeroBinario
-          | variavel
+<fator> ::= numeroBinario #9
+          | variavel #10
           | abrePar <expressao> fechaPar
-          | log abrePar <expressao> fechaPar;
+          | log abrePar <expressao> fechaPar #11;
