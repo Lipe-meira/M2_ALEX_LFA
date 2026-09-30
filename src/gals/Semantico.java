@@ -50,6 +50,19 @@ public class Semantico implements Constants {
                 valores.push(esquerda * direita);
                 break;
             }
+            case 7: {
+                int direita = valores.pop();
+                int esquerda = valores.pop();
+
+                if (direita == 0) {
+                    throw new SemanticError(
+                            "Divisão por zero não permitida.",
+                            token.getPosition());
+                }
+
+                valores.push(esquerda / direita);
+                break;
+            }
             case 9:
                 int valor = Integer.parseInt(token.getLexeme(), 2);
                 valores.push(valor);
