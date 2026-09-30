@@ -44,6 +44,12 @@ public class Semantico implements Constants {
                 valores.push(resultadoSubtracao);
                 break;
             }
+            case 6: {
+                int direita = valores.pop();
+                int esquerda = valores.pop();
+                valores.push(esquerda * direita);
+                break;
+            }
             case 9:
                 int valor = Integer.parseInt(token.getLexeme(), 2);
                 valores.push(valor);
