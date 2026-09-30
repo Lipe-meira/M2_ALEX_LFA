@@ -1,2 +1,4 @@
 A = 10;
-Show(A);
+B = 11;
+C = A + B;
+Show(C);
