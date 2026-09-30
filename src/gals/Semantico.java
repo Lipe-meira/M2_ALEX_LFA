@@ -30,6 +30,20 @@ public class Semantico implements Constants {
                 valores.push(esquerda + direita);
                 break;
             }
+            case 5: {
+                int direita = valores.pop();
+                int esquerda = valores.pop();
+                int resultadoSubtracao = esquerda - direita;
+
+                if (resultadoSubtracao < 0) {
+                    throw new SemanticError(
+                            "Resultado negativo não permitido.",
+                            token.getPosition());
+                }
+
+                valores.push(resultadoSubtracao);
+                break;
+            }
             case 9:
                 int valor = Integer.parseInt(token.getLexeme(), 2);
                 valores.push(valor);
