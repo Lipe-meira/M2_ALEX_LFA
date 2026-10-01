@@ -63,6 +63,24 @@ public class Semantico implements Constants {
                 valores.push(esquerda / direita);
                 break;
             }
+            case 8:
+                int expoente = valores.pop();
+                int base = valores.pop();
+                if (expoente < 0) {
+                    throw new SemanticError(
+                            "Expoente negativo não permitido.",
+                            token.getPosition());
+                }
+
+                double resultadoPotencia = Math.pow(base, expoente);
+
+                if (resultadoPotencia > Integer.MAX_VALUE) {
+                    throw new SemanticError(
+                            "Resultado da exponenciação excede o limite permitido.",
+                            token.getPosition());
+                }
+                valores.push((int)resultadoPotencia);
+                break;
             case 9:
                 int valor = Integer.parseInt(token.getLexeme(), 2);
                 valores.push(valor);
