@@ -97,6 +97,21 @@ public class Semantico implements Constants {
 
                 valores.push(valorVariavel);
                 break;
+            case 11:
+                int baseLog = valores.pop();
+                if (baseLog <= 0) {
+                    throw new SemanticError(
+                            "Logaritmo de número não positivo não permitido.",
+                            token.getPosition());
+                }
+                double resultadoLog = Math.log10(baseLog);
+                if (resultadoLog > Integer.MAX_VALUE) {
+                    throw new SemanticError(
+                            "Resultado do logaritmo excede o limite permitido.",
+                            token.getPosition());
+                }
+                valores.push((int)resultadoLog);
+                break;
 
             default:
                 System.out.println("Ação #" + action + ", Token: " + token);
