@@ -13,13 +13,15 @@ public class Semantico implements Constants {
 
         switch (action) {
 
-            // Recebe o nome da variavel que vai receber o valor, inicio do fluxo de atribuicao
+            // Recebe o nome da variavel que vai receber o valor, inicio do fluxo de
+            // atribuicao
             case 1: {
                 variavelAtual = token.getLexeme();
                 break;
             }
 
-            // Recebe o resultado da pilha (9) e atribui a variavel (1), fim do fluxo de atribuicao
+            // Recebe o resultado da pilha (9) e atribui a variavel (1), fim do fluxo de
+            // atribuicao
             case 2: {
                 variaveis.put(variavelAtual, valores.pop());
                 variavelAtual = null;
@@ -41,7 +43,13 @@ public class Semantico implements Constants {
             case 4: {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
-                valores.push(esquerda + direita);
+                long resultadoSoma = (long) esquerda + direita;
+                if (resultadoSoma > Integer.MAX_VALUE || resultadoSoma < Integer.MIN_VALUE) {
+                    throw new SemanticError(
+                            "Resultado da soma excede o limite permitido.",
+                            token.getPosition());
+                }
+                valores.push((int) resultadoSoma);
                 break;
             }
 
@@ -49,9 +57,13 @@ public class Semantico implements Constants {
             case 5: {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
-                int resultadoSubtracao = esquerda - direita;
-
-                valores.push(resultadoSubtracao);
+                long resultadoSubtracao = (long) esquerda - direita;
+                if (resultadoSubtracao < Integer.MIN_VALUE || resultadoSubtracao > Integer.MAX_VALUE) {
+                    throw new SemanticError(
+                            "Resultado da subtração excede o limite permitido.",
+                            token.getPosition());
+                }
+                valores.push((int) resultadoSubtracao);
                 break;
             }
 
@@ -59,7 +71,16 @@ public class Semantico implements Constants {
             case 6: {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
-                valores.push(esquerda * direita);
+                long resultadoMultiplicacao = (long) esquerda * direita;
+
+                if (resultadoMultiplicacao < Integer.MIN_VALUE
+                        || resultadoMultiplicacao > Integer.MAX_VALUE) {
+                    throw new SemanticError(
+                            "Resultado da multiplicação excede o limite permitido.",
+                            token.getPosition());
+                }
+
+                valores.push((int) resultadoMultiplicacao);
                 break;
             }
 
