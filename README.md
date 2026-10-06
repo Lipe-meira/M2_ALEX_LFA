@@ -4,7 +4,7 @@ Projeto acadêmico da disciplina de Linguagens Formais Autômatos.
 
 ## Objetivo
 
-Desenvolver, com Web-GALS e Java, uma linguagem para trabalhar com números binários inteiros sem sinal.
+Desenvolver, com Web-GALS e Java, uma linguagem que recebe literais binários inteiros sem sinal e avalia expressões inteiras, incluindo resultados negativos.
 
 A linguagem implementa:
 
@@ -69,13 +69,28 @@ Saída:
 10
 ```
 
+Resultados negativos também são representados em binário, com o sinal `-` antes do valor:
+
+```text
+A = 10;
+B = 111;
+C = A - B;
+Show(C);
+```
+
+Saída:
+
+```text
+-101
+```
+
 ## Regras da linguagem
 
 - Comandos terminam com `;`.
 - Variáveis possuem apenas letras e diferenciam maiúsculas de minúsculas: `A` e `a` são variáveis distintas.
 - Os comandos reservados são `Show` e `log`, escritos exatamente assim.
 - `Show` recebe uma variável, como em `Show(A);`.
-- Literais numéricos contêm apenas `0` e `1`.
+- Literais numéricos contêm apenas `0` e `1` e não possuem sinal. Valores negativos podem ser produzidos por expressões, como `0 - 1`.
 - Parênteses permitem agrupar expressões.
 - A exponenciação (`**`) tem prioridade sobre multiplicação e divisão, que têm prioridade sobre soma e subtração.
 - Potências encadeadas são avaliadas da direita para a esquerda: `A ** B ** C` equivale a `A ** (B ** C)`.
@@ -106,7 +121,7 @@ O Web-GALS gera os analisadores e as classes de suporte. A lógica do interpreta
 
 O `App` lê o código e fornece seu conteúdo ao analisador léxico. O léxico reconhece os tokens, e o sintático verifica se eles seguem a gramática. Durante a análise, os marcadores `#1` a `#11` acionam métodos da parte semântica.
 
-O `Semantico` armazena as variáveis em um `Map<String, Integer>` e usa uma pilha para avaliar expressões. Os literais são convertidos de binário para `int`; `Show` converte o resultado de volta para binário.
+O `Semantico` armazena as variáveis em um `Map<String, Integer>` e usa uma pilha para avaliar expressões. Os literais são convertidos de binário para `int`; `Show` converte o resultado de volta para binário e acrescenta o sinal `-` quando o valor é negativo.
 
 ## Erros e limitações atuais
 
@@ -114,14 +129,15 @@ O interpretador detecta:
 
 - caracteres inválidos e comandos fora da gramática;
 - uso de variável não inicializada;
-- subtração com resultado negativo;
 - divisão por zero;
 - logaritmo de valor não positivo;
-- expoente negativo e potência acima de `Integer.MAX_VALUE`.
+- expoente negativo;
+- literais binários acima de `Integer.MAX_VALUE`;
+- resultados de soma, subtração, multiplicação, divisão e exponenciação fora do intervalo do tipo `int`.
 
-Apesar de a linguagem trabalhar com valores sem sinal, a implementação utiliza o `int` do Java: os valores não negativos representáveis vão de 0 a 2.147.483.647. Soma e multiplicação ainda não possuem verificação de estouro. Literais acima desse limite geram `NumberFormatException`.
+Os literais são inteiros sem sinal entre 0 e 2.147.483.647. As expressões podem produzir valores entre -2.147.483.648 e 2.147.483.647, limites do tipo `int` do Java. Operações que ultrapassam esse intervalo geram erro semântico.
 
-A execução para no primeiro erro. Atualmente, o `App` propaga as exceções, exibindo o stack trace no terminal. A apresentação de mensagens amigáveis e a organização de uma suíte de testes ainda estão pendentes.
+A execução para no primeiro erro. O `App` trata erros léxicos, sintáticos, semânticos e de leitura do arquivo, exibindo uma mensagem no terminal. A organização de uma suíte de testes automatizados ainda está pendente.
 
 ## Web-GALS
 
