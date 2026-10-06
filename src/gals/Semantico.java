@@ -31,11 +31,7 @@ public class Semantico implements Constants {
             // SHOW
             case 3: {
                 int resultado = valores.pop();
-
-                String binario = resultado < 0
-                        ? "-" + Integer.toBinaryString(Math.abs(resultado))
-                        : Integer.toBinaryString(resultado);
-                System.out.println(binario);
+                System.out.println(Integer.toBinaryString(resultado));
                 break;
             }
 
@@ -63,6 +59,13 @@ public class Semantico implements Constants {
                             "Resultado da subtração excede o limite permitido.",
                             token.getPosition());
                 }
+
+                if (resultadoSubtracao < 0) {
+                    throw new SemanticError(
+                            "Resultado negativo não permitido.",
+                            token.getPosition());
+                }
+
                 valores.push((int) resultadoSubtracao);
                 break;
             }
