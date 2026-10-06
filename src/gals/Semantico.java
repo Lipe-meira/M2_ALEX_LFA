@@ -95,7 +95,16 @@ public class Semantico implements Constants {
                             token.getPosition());
                 }
 
-                valores.push(esquerda / direita);
+                long resultadoDivisao = (long) esquerda / direita;
+
+                if (resultadoDivisao < Integer.MIN_VALUE
+                        || resultadoDivisao > Integer.MAX_VALUE) {
+                    throw new SemanticError(
+                            "Resultado da divisão excede o limite permitido.",
+                            token.getPosition());
+                }
+
+                valores.push((int) resultadoDivisao);
                 break;
             }
 
@@ -103,6 +112,7 @@ public class Semantico implements Constants {
             case 8: {
                 int expoente = valores.pop();
                 int base = valores.pop();
+
                 if (expoente < 0) {
                     throw new SemanticError(
                             "Expoente negativo não permitido.",
@@ -111,11 +121,14 @@ public class Semantico implements Constants {
 
                 double resultadoPotencia = Math.pow(base, expoente);
 
-                if (resultadoPotencia > Integer.MAX_VALUE) {
+                if (!Double.isFinite(resultadoPotencia)
+                        || resultadoPotencia < Integer.MIN_VALUE
+                        || resultadoPotencia > Integer.MAX_VALUE) {
                     throw new SemanticError(
                             "Resultado da exponenciação excede o limite permitido.",
                             token.getPosition());
                 }
+
                 valores.push((int) resultadoPotencia);
                 break;
             }
@@ -123,8 +136,14 @@ public class Semantico implements Constants {
             // Converte o literal binario para int e empilha o valor pra ser atribuido ou
             // ser usado em uma operacao
             case 9: {
-                int valor = Integer.parseInt(token.getLexeme(), 2);
-                valores.push(valor);
+                try {
+                    int valor = Integer.parseInt(token.getLexeme(), 2);
+                    valores.push(valor);
+                } catch (NumberFormatException e) {
+                    throw new SemanticError(
+                            "Número binário excede o limite permitido.",
+                            token.getPosition());
+                }
                 break;
             }
 
