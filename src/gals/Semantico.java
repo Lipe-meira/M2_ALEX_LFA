@@ -12,44 +12,58 @@ public class Semantico implements Constants {
     public void executeAction(int action, Token token) throws SemanticError {
 
         switch (action) {
-            case 1:
+
+            // Recebe o nome da variavel que vai receber o valor, inicio do fluxo de atribuicao
+            case 1: {
                 variavelAtual = token.getLexeme();
                 break;
+            }
 
-            case 2:
+            // Recebe o resultado da pilha (9) e atribui a variavel (1), fim do fluxo de atribuicao
+            case 2: {
                 variaveis.put(variavelAtual, valores.pop());
                 variavelAtual = null;
                 break;
-            case 3:
+            }
+
+            // SHOW
+            case 3: {
                 int resultado = valores.pop();
-                System.out.println(Integer.toBinaryString(resultado));
+
+                String binario = resultado < 0
+                        ? "-" + Integer.toBinaryString(Math.abs(resultado))
+                        : Integer.toBinaryString(resultado);
+                System.out.println(binario);
                 break;
+            }
+
+            // SOMA
             case 4: {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
                 valores.push(esquerda + direita);
                 break;
             }
+
+            // SUBTRACAO
             case 5: {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
                 int resultadoSubtracao = esquerda - direita;
 
-                if (resultadoSubtracao < 0) {
-                    throw new SemanticError(
-                            "Resultado negativo não permitido.",
-                            token.getPosition());
-                }
-
                 valores.push(resultadoSubtracao);
                 break;
             }
+
+            // MULTIPLICACAO
             case 6: {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
                 valores.push(esquerda * direita);
                 break;
             }
+
+            // DIVISAO
             case 7: {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
@@ -63,7 +77,9 @@ public class Semantico implements Constants {
                 valores.push(esquerda / direita);
                 break;
             }
-            case 8:
+
+            // POTENCIA
+            case 8: {
                 int expoente = valores.pop();
                 int base = valores.pop();
                 if (expoente < 0) {
@@ -79,13 +95,20 @@ public class Semantico implements Constants {
                             "Resultado da exponenciação excede o limite permitido.",
                             token.getPosition());
                 }
-                valores.push((int)resultadoPotencia);
+                valores.push((int) resultadoPotencia);
                 break;
-            case 9:
+            }
+
+            // Converte o literal binario para int e empilha o valor pra ser atribuido ou
+            // ser usado em uma operacao
+            case 9: {
                 int valor = Integer.parseInt(token.getLexeme(), 2);
                 valores.push(valor);
                 break;
-            case 10:
+            }
+
+            // consulta o valor da variavel e coloca na pilha pra operacao
+            case 10: {
                 String nome = token.getLexeme();
                 Integer valorVariavel = variaveis.get(nome);
 
@@ -97,7 +120,10 @@ public class Semantico implements Constants {
 
                 valores.push(valorVariavel);
                 break;
-            case 11:
+            }
+
+            // LOGARITMO
+            case 11: {
                 int baseLog = valores.pop();
                 if (baseLog <= 0) {
                     throw new SemanticError(
@@ -110,8 +136,9 @@ public class Semantico implements Constants {
                             "Resultado do logaritmo excede o limite permitido.",
                             token.getPosition());
                 }
-                valores.push((int)resultadoLog);
+                valores.push((int) resultadoLog);
                 break;
+            }
 
             default:
                 System.out.println("Ação #" + action + ", Token: " + token);
