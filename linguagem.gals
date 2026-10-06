@@ -34,15 +34,18 @@ abrePar: "("
 fechaPar: ")"
 fimComando: ";"
 
+// ignora espacos em branco
  : [\ \n\t\r]+
 
 #NonTerminals
 <programa>
 <comando>
+// menor prioridade
 <expressao>
 <termo>
 <potencia>
 <fator>
+// maior prioridade
 
 #Grammar
 

@@ -1,7 +1,11 @@
 A = 10;
-B = 10;
-C = A ** B;
-
+B = 11;
+C = 111 + A * B;
+D = (C - A) / B;
+E = A ** B;
+F = log(1100100);
 
 Show(C);
-
+Show(D);
+Show(E);
+Show(F);
