@@ -40,7 +40,7 @@ public class Semantico implements Constants {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
                 long resultadoSoma = (long) esquerda + direita;
-                if (resultadoSoma > Integer.MAX_VALUE || resultadoSoma < Integer.MIN_VALUE) {
+                if (resultadoSoma > Integer.MAX_VALUE) {
                     throw new SemanticError(
                             "Resultado da soma excede o limite permitido.",
                             token.getPosition());
@@ -54,7 +54,7 @@ public class Semantico implements Constants {
                 int direita = valores.pop();
                 int esquerda = valores.pop();
                 long resultadoSubtracao = (long) esquerda - direita;
-                if (resultadoSubtracao < Integer.MIN_VALUE || resultadoSubtracao > Integer.MAX_VALUE) {
+                if (resultadoSubtracao > Integer.MAX_VALUE) {
                     throw new SemanticError(
                             "Resultado da subtração excede o limite permitido.",
                             token.getPosition());
@@ -76,8 +76,7 @@ public class Semantico implements Constants {
                 int esquerda = valores.pop();
                 long resultadoMultiplicacao = (long) esquerda * direita;
 
-                if (resultadoMultiplicacao < Integer.MIN_VALUE
-                        || resultadoMultiplicacao > Integer.MAX_VALUE) {
+                if (resultadoMultiplicacao > Integer.MAX_VALUE) {
                     throw new SemanticError(
                             "Resultado da multiplicação excede o limite permitido.",
                             token.getPosition());
@@ -100,8 +99,7 @@ public class Semantico implements Constants {
 
                 long resultadoDivisao = (long) esquerda / direita;
 
-                if (resultadoDivisao < Integer.MIN_VALUE
-                        || resultadoDivisao > Integer.MAX_VALUE) {
+                if (resultadoDivisao > Integer.MAX_VALUE) {
                     throw new SemanticError(
                             "Resultado da divisão excede o limite permitido.",
                             token.getPosition());
@@ -124,9 +122,7 @@ public class Semantico implements Constants {
 
                 double resultadoPotencia = Math.pow(base, expoente);
 
-                if (!Double.isFinite(resultadoPotencia)
-                        || resultadoPotencia < Integer.MIN_VALUE
-                        || resultadoPotencia > Integer.MAX_VALUE) {
+                if (resultadoPotencia > Integer.MAX_VALUE) {
                     throw new SemanticError(
                             "Resultado da exponenciação excede o limite permitido.",
                             token.getPosition());
